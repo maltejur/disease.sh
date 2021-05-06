@@ -1,11 +1,19 @@
 import JsonViewer from "./jsonViewer.js";
 
+let requestCache = {};
+
 async function apiFetch(url) {
   document.getElementById("requestUrl").innerText = url;
   document.getElementById("requestUrl").href = url;
 
-  const response = await fetch(url);
-  const json = await response.json();
+  let json;
+
+  if (requestCache[url]) json = requestCache[url];
+  else {
+    const response = await fetch(url);
+    json = await response.json();
+    requestCache[url] = json;
+  }
 
   document.getElementById("response").innerHTML = "";
   new JsonViewer({
