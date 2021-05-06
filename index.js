@@ -191,6 +191,14 @@ document.addEventListener("scroll", () => {
   }
 });
 
+if (!localStorage.getItem("hideNewsletter"))
+  document.getElementById("newsletter").classList.remove("is-hidden");
+
+document.getElementById("newsletterClose").addEventListener("click", () => {
+  document.getElementById("newsletter").classList.add("is-hidden");
+  localStorage.setItem("hideNewsletter", true);
+});
+
 document
   .getElementById("newsletterForm")
   .addEventListener("submit", (event) => {

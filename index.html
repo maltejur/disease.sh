@@ -37,6 +37,9 @@
           right: 0;
           z-index: 20;
         }
+        #newsletter {
+          display: none;
+        }
       }
       .navbar.scrolled {
         box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
@@ -352,7 +355,7 @@
     </footer>
 
     <article
-      class="message m-5"
+      class="message m-5 is-hidden"
       style="position: fixed; bottom: 0; right: 0"
       id="newsletter"
     >
@@ -361,7 +364,7 @@
         <button
           class="delete"
           aria-label="delete"
-          onclick="document.getElementById('newsletter').classList.add('is-hidden')"
+          id="newsletterClose"
         ></button>
       </div>
       <div class="message-body">
