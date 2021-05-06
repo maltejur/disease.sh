@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>disease.sh</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.css"
+    />
+    <link rel="icon" href="./images/virus.png" />
+    <link rel="stylesheet" href="jsonViewer.css" />
+    <style>
+      .card {
+        transition: box-shadow 0.4s ease;
+      }
+      .card:hover {
+        box-shadow: 0 0.5em 2em -0.125em rgba(10, 10, 10, 0.2),
+          0 0 0 1px rgba(10, 10, 10, 0.02);
+      }
+      .navbar-item:hover,
+      .navbar-item:focus {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+      }
+      @media screen and (max-width: 1023px) {
+        .navbar-item {
+          color: #363636 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header
+      class="hero"
+      style="
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+          url(./images/rona.jpg);
+        background-size: cover;
+        position: sticky;
+        top: -195px;
+        z-index: 10;
+      "
+    >
+      <div class="navbar" style="position: sticky; top: 0">
+        <div class="container">
+          <div class="navbar-brand">
+            <h4
+              class="title is-4 has-text-white mt-3 is-invisible"
+              id="titleSmall"
+            >
+              disease.sh
+            </h4>
+          </div>
+          <div class="navbar-menu" id="navMenu">
+            <div class="navbar-end">
+              <a
+                class="navbar-item has-text-light"
+                href="https://api.caw.sh/docs/"
+                target="_blank"
+              >
+                <span>
+                  <i class="fas fa-book"></i>
+                  <span>Docs</span>
+                </span>
+              </a>
+              <a
+                class="navbar-item has-text-light"
+                href="https://github.com/disease-sh/api"
+                target="_blank"
+              >
+                <span>
+                  <i class="fab fa-github"></i>
+                  <span>GitHub</span>
+                </span>
+              </a>
+              <a
+                class="navbar-item has-text-light"
+                href="https://discord.gg/uypdG2h"
+                target="_blank"
+              >
+                <span>
+                  <i class="fab fa-discord"></i>
+                  <span>Discord</span>
+                </span>
+              </a>
+              <a
+                class="navbar-item has-text-light"
+                href="https://www.buymeacoffee.com/covidapi/shop"
+                target="_blank"
+              >
+                <span
+                  ><i class="fas fa-donate"></i>
+                  <span>Donate</span>
+                </span>
+              </a>
+              <a
+                class="navbar-item has-text-light"
+                href="https://twitter.com/DiseaseAPI"
+                target="_blank"
+              >
+                <span>
+                  <i class="fab fa-twitter"></i>
+                  <span>Twitter</span>
+                </span>
+              </a>
+            </div>
+          </div>
+          <a
+            role="button"
+            class="navbar-burger has-text-light"
+            data-target="navMenu"
+            aria-label="menu"
+            aria-expanded="false"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-body">
+        <div class="container has-text-white" id="titleBig">
+          <h1 class="title is-1 has-text-white">
+            disease.sh - Open Disease Data API
+          </h1>
+          <h3 class="subtitle is-3 has-text-grey-lighter">
+            20,000,000,000+ Requests Served to Date
+          </h3>
+          <!-- <div class="columns my-6 pt-6 is-justify-content-center">
+            <a href="https://disease.sh/docs/" class="button py-5 mr-4">
+              <i class="fas fa-book is-size-4 mr-3"></i>
+              <h4 class="title is-4">Docs</h4>
+            </a>
+            <a
+              href="https://app.getpostman.com/run-collection/11144369-e27366d6-7699-46f4-b58e-2b2b2e637be5-Szf6Z9B3"
+              class="button py-5"
+            >
+              <img src="./postman.png" alt="" width="30px" class="mr-3" />
+              <h4 class="title is-4">Postman</h4>
+            </a>
+          </div> -->
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="container">
+        <h3 class="title is-3">Examples</h3>
+        <div class="tabs">
+          <ul>
+            <li class="is-active">
+              <a id="exampleHistory">Covid-19 History</a>
+            </li>
+            <li><a id="exampleWorldwide">Covid-19 Worldwide</a></li>
+            <li><a id="exampleUsa">Covid-19 USA</a></li>
+          </ul>
+        </div>
+        <p class="mb-1">Request URL</p>
+        <pre><a id="requestUrl" target="_blank"></a></pre>
+        <div class="columns">
+          <div class="column is-one-third">
+            <p class="mt-4 mb-1">Response</p>
+            <pre style="height: 400px">
+            <div id="response"></div></pre>
+          </div>
+          <div class="column">
+            <div id="chart" class="mt-6 pl-4"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <hr />
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <h3 class="title is-3">Features</h3>
+        <p style="max-width: 600px">
+          Build anything from console widgets to mobile applications, with our
+          free and easy to use API. We provide data on current global outbreaks,
+          including COVID-19 and Influenza.
+        </p>
+        <div class="columns my-5">
+          <div class="card column m-4">
+            <div class="card-content">
+              <h4 class="title is-4">
+                <i class="fas fa-dollar-sign mr-4 has-text-success"></i>Free
+              </h4>
+              <p>
+                Our services are free to use, and have a 100/100 page insight
+                performance score.
+              </p>
+            </div>
+          </div>
+
+          <div class="card column m-4">
+            <div class="card-content">
+              <h4 class="title is-4">
+                <i class="fas fa-database mr-4 has-text-link"></i>Multi-Source
+              </h4>
+              <p>
+                We source data from
+                <a
+                  href="https://github.com/CSSEGISandData/COVID-19"
+                  target="_blank"
+                  >Johns Hopkins University</a
+                >,
+                <a
+                  href="https://github.com/nytimes/covid-19-data"
+                  target="_blank"
+                  >the New York Times</a
+                >, Worldometers, and
+                <a
+                  href="https://github.com/ActiveConclusion/COVID19_mobility"
+                  target="_blank"
+                  >Apple</a
+                >
+                reports to give you a comprehensive view of the data. Our
+                government-specific sources can be found in our
+                <a
+                  href="https://github.com/disease-sh/api/blob/master/README.md"
+                  target="_blank"
+                  >README</a
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="card column m-4">
+            <div class="card-content">
+              <h4 class="title is-4">
+                <i class="fas fa-sync mr-4 has-text-primary"></i>Up to Date
+              </h4>
+              <p>We update our data as soon as our sources do.</p>
+            </div>
+          </div>
+
+          <div class="card column m-4">
+            <div class="card-content">
+              <h4 class="title is-4">
+                <i class="fas fa-code mr-4 has-text-danger"></i>
+                JSON Formatted
+              </h4>
+              <p>
+                Our responses are served in JSON format, making for easy and
+                reliable integration to your service.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <hr />
+    </div>
+
+    <section class="section mb-6">
+      <div class="container">
+        <center>
+          <div class="title is-3">Use it now</div>
+          <a
+            class="button is-link is-large"
+            href="https://api.caw.sh/docs/"
+            target="_blank"
+          >
+            <span>
+              <span>View</span>
+              <strong>docs</strong>
+            </span>
+          </a>
+          <a
+            class="button is-light is-large"
+            href="https://app.getpostman.com/run-collection/11144369-e27366d6-7699-46f4-b58e-2b2b2e637be5-Szf6Z9B3"
+            target="_blank"
+          >
+            <span>
+              <span>View on</span>
+              <strong>Postman</strong>
+            </span>
+          </a>
+        </center>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <div class="title is-5">🎉 Special thanks to 🎉</div>
+        <a href="https://github.com/EliteDaMyth" target="_blank" class="mr-3"
+          >EliteDaMyth</a
+        >
+        <a href="https://ravy.pink/" target="_blank" class="mr-3">Ravy</a>
+        <a href="https://github.com/ebwinters" target="_blank" class="mr-3"
+          >Ethan Winters</a
+        >
+        <a href="https://github.com/puf17640" target="_blank" class="mr-3"
+          >Julian Pufler</a
+        >
+        <a
+          href="https://github.com/disease-sh/api/blob/master/TERMS.md"
+          style="display: block"
+          class="mt-6"
+          target="_blank"
+          >Terms of Service</a
+        >
+      </div>
+    </footer>
+
+    <article
+      class="message m-5"
+      style="position: fixed; bottom: 0; right: 0"
+      id="newsletter"
+    >
+      <div class="message-header">
+        <p>Are you a developer?</p>
+        <button
+          class="delete"
+          aria-label="delete"
+          onclick="document.getElementById('newsletter').classList.add('is-hidden')"
+        ></button>
+      </div>
+      <div class="message-body">
+        <p class="mb-3">Join our API Newsletter to stay updated!</p>
+        <form id="newsletterForm">
+          <div class="field has-addons">
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                placeholder="your-email@domain.com"
+              />
+            </div>
+            <div class="control">
+              <button
+                type="submit"
+                class="button is-dark"
+                id="newsletterFormBtn"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
