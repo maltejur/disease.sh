@@ -26,102 +26,141 @@
       .navbar-item:focus {
         background-color: rgba(0, 0, 0, 0.1) !important;
       }
-      @media screen and (max-width: 1023px) {
+      @media screen and (max-width: 1024px) {
         .navbar-item {
           color: #363636 !important;
+        }
+        .navbar-menu {
+          position: fixed;
+          top: 52px;
+          left: 0;
+          right: 0;
+          z-index: 20;
+        }
+      }
+      .navbar.scrolled {
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+      }
+      .navbar.scrolled .navbar-brand {
+        opacity: 1 !important;
+        pointer-events: all;
+      }
+      @media (max-width: 550px) {
+        .navbar,
+        .hero {
+          background-size: 550px !important;
+        }
+      }
+      @media (max-width: 450px) {
+        .navbar,
+        .hero {
+          background-size: 850px !important;
         }
       }
     </style>
   </head>
   <body>
+    <div
+      class="navbar"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 52px;
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.4)
+          ),
+          url(./images/rona.jpg);
+        background-size: cover;
+        display: flex;
+        transition: box-shadow 0.2s ease;
+      "
+    >
+      <div
+        class="navbar-brand"
+        style="opacity: 0; pointer-events: none; transition: opacity 0.2s ease"
+      >
+        <h4 class="title is-4 has-text-white mt-3 ml-5" id="titleSmall">
+          disease.sh
+        </h4>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end">
+          <a
+            class="navbar-item has-text-light"
+            href="https://api.caw.sh/docs/"
+            target="_blank"
+          >
+            <span>
+              <i class="fas fa-book"></i>
+              <span>Docs</span>
+            </span>
+          </a>
+          <a
+            class="navbar-item has-text-light"
+            href="https://github.com/disease-sh/api"
+            target="_blank"
+          >
+            <span>
+              <i class="fab fa-github"></i>
+              <span>GitHub</span>
+            </span>
+          </a>
+          <a
+            class="navbar-item has-text-light"
+            href="https://discord.gg/uypdG2h"
+            target="_blank"
+          >
+            <span>
+              <i class="fab fa-discord"></i>
+              <span>Discord</span>
+            </span>
+          </a>
+          <a
+            class="navbar-item has-text-light"
+            href="https://www.buymeacoffee.com/covidapi/shop"
+            target="_blank"
+          >
+            <span
+              ><i class="fas fa-donate"></i>
+              <span>Donate</span>
+            </span>
+          </a>
+          <a
+            class="navbar-item has-text-light"
+            href="https://twitter.com/DiseaseAPI"
+            target="_blank"
+          >
+            <span>
+              <i class="fab fa-twitter"></i>
+              <span>Twitter</span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <a
+        role="button"
+        class="navbar-burger has-text-light"
+        data-target="navMenu"
+        aria-label="menu"
+        aria-expanded="false"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
     <header
       class="hero"
       style="
         background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
           url(./images/rona.jpg);
         background-size: cover;
-        position: sticky;
-        top: -195px;
         z-index: 10;
       "
     >
-      <div class="navbar" style="position: sticky; top: 0">
-        <div class="container">
-          <div class="navbar-brand">
-            <h4
-              class="title is-4 has-text-white mt-3 is-invisible"
-              id="titleSmall"
-            >
-              disease.sh
-            </h4>
-          </div>
-          <div class="navbar-menu" id="navMenu">
-            <div class="navbar-end">
-              <a
-                class="navbar-item has-text-light"
-                href="https://api.caw.sh/docs/"
-                target="_blank"
-              >
-                <span>
-                  <i class="fas fa-book"></i>
-                  <span>Docs</span>
-                </span>
-              </a>
-              <a
-                class="navbar-item has-text-light"
-                href="https://github.com/disease-sh/api"
-                target="_blank"
-              >
-                <span>
-                  <i class="fab fa-github"></i>
-                  <span>GitHub</span>
-                </span>
-              </a>
-              <a
-                class="navbar-item has-text-light"
-                href="https://discord.gg/uypdG2h"
-                target="_blank"
-              >
-                <span>
-                  <i class="fab fa-discord"></i>
-                  <span>Discord</span>
-                </span>
-              </a>
-              <a
-                class="navbar-item has-text-light"
-                href="https://www.buymeacoffee.com/covidapi/shop"
-                target="_blank"
-              >
-                <span
-                  ><i class="fas fa-donate"></i>
-                  <span>Donate</span>
-                </span>
-              </a>
-              <a
-                class="navbar-item has-text-light"
-                href="https://twitter.com/DiseaseAPI"
-                target="_blank"
-              >
-                <span>
-                  <i class="fab fa-twitter"></i>
-                  <span>Twitter</span>
-                </span>
-              </a>
-            </div>
-          </div>
-          <a
-            role="button"
-            class="navbar-burger has-text-light"
-            data-target="navMenu"
-            aria-label="menu"
-            aria-expanded="false"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-        </div>
-      </div>
       <div class="hero-body">
         <div class="container has-text-white" id="titleBig">
           <h1 class="title is-1 has-text-white">
@@ -157,6 +196,7 @@
             </li>
             <li><a id="exampleWorldwide">Covid-19 Worldwide</a></li>
             <li><a id="exampleUsa">Covid-19 USA</a></li>
+            <li><a id="exampleVaccines">Covid-19 Vaccines Worldwide</a></li>
           </ul>
         </div>
         <p class="mb-1">Request URL</p>

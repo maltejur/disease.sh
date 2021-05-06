@@ -1,6 +1,6 @@
 import JsonViewer from "./jsonViewer.js";
 
-async function apiFetch(url, barChart = false) {
+async function apiFetch(url) {
   document.getElementById("requestUrl").innerText = url;
   document.getElementById("requestUrl").href = url;
 
@@ -15,7 +15,7 @@ async function apiFetch(url, barChart = false) {
     expand: true,
   });
 
-  barChart ? createBarChart(json) : createLineChart(json);
+  return json;
 }
 
 async function createLineChart(dataset) {
@@ -72,8 +72,29 @@ async function createBarChart(dataset, name) {
   const chart = new google.visualization.PieChart(
     document.getElementById("chart")
   );
-  console.log(data);
+
   chart.draw(data, options);
+}
+
+async function createGeoChart(dataset) {
+  await loadGoogleCharts();
+  const data = new google.visualization.DataTable();
+
+  data.addColumn("string", "Country");
+  data.addColumn("number", "Vaccines rolled out");
+
+  data.addRows(
+    dataset.map((x) => [
+      x.country.replace("USA", "United States").replace("UK", "United Kingdom"),
+      Object.values(x.timeline)[0],
+    ])
+  );
+
+  const chart = new google.visualization.GeoChart(
+    document.getElementById("chart")
+  );
+
+  chart.draw(data);
 }
 
 function focusTab(name) {
@@ -84,24 +105,43 @@ function focusTab(name) {
   document.getElementById(name).parentElement.classList.add("is-active");
 }
 
-function exampleHistory() {
+async function exampleHistory() {
   focusTab("exampleHistory");
   apiFetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all");
+  createLineChart(
+    await apiFetch("https://disease.sh/v3/covid-19/historical/all?lastdays=all")
+  );
 }
 
-function exampleWorldwide() {
+async function exampleWorldwide() {
   focusTab("exampleWorldwide");
-  apiFetch("https://disease.sh/v3/covid-19/all", true, "Worldwide");
+  createBarChart(
+    await apiFetch("https://disease.sh/v3/covid-19/all"),
+    "Worldwide"
+  );
 }
 
-function exampleUsa() {
+async function exampleUsa() {
   focusTab("exampleUsa");
-  apiFetch("https://disease.sh/v3/covid-19/countries/usa", true, "USA");
+  createBarChart(
+    await apiFetch("https://disease.sh/v3/covid-19/countries/usa"),
+    "USA"
+  );
+}
+
+async function exampleVaccines() {
+  focusTab("exampleVaccines");
+  createGeoChart(
+    await apiFetch(
+      "https://disease.sh/v3/covid-19/vaccine/coverage/countries?lastdays=1"
+    )
+  );
 }
 
 document.getElementById("exampleHistory").onclick = exampleHistory;
 document.getElementById("exampleWorldwide").onclick = exampleWorldwide;
 document.getElementById("exampleUsa").onclick = exampleUsa;
+document.getElementById("exampleVaccines").onclick = exampleVaccines;
 exampleHistory();
 
 let googleChartsLoaded = false;
@@ -110,7 +150,10 @@ function loadGoogleCharts() {
     if (googleChartsLoaded) {
       resolve();
     } else {
-      google.charts.load("current", { packages: ["line", "corechart"] });
+      google.charts.load("current", {
+        packages: ["line", "corechart", "geochart"],
+        mapsApiKey: "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY",
+      });
       google.charts.setOnLoadCallback(resolve);
     }
   });
@@ -141,12 +184,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("scroll", () => {
-  if (window.scrollY > 180) {
-    document.getElementById("titleSmall").classList.remove("is-invisible");
-    document.getElementById("titleBig").classList.add("is-invisible");
+  if (window.scrollY > 0) {
+    document.getElementsByClassName("navbar")[0].classList.add("scrolled");
   } else {
-    document.getElementById("titleSmall").classList.add("is-invisible");
-    document.getElementById("titleBig").classList.remove("is-invisible");
+    document.getElementsByClassName("navbar")[0].classList.remove("scrolled");
   }
 });
 
