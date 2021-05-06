@@ -35,16 +35,18 @@ async function createLineChart(dataset) {
   data.addColumn("number", "Deaths");
   data.addColumn("number", "Recovered");
 
-  Object.keys(dataset.cases).forEach((date) => {
-    data.addRows([
-      [
-        new Date(date),
-        dataset.cases[date],
-        dataset.deaths[date],
-        dataset.recovered[date],
-      ],
-    ]);
-  });
+  Object.keys(dataset.cases)
+    .filter((_, index) => index % 3 === 0)
+    .forEach((date) => {
+      data.addRows([
+        [
+          new Date(date),
+          dataset.cases[date],
+          dataset.deaths[date],
+          dataset.recovered[date],
+        ],
+      ]);
+    });
 
   const options = {
     curveType: "function",
