@@ -49,7 +49,7 @@ async function createLineChart(dataset) {
   const options = {
     curveType: "function",
     legend: { position: "bottom" },
-    height: 400,
+    height: document.body.clientWidth < 768 ? 150 : 400,
   };
 
   const chart = new google.charts.Line(document.getElementById("chart"));
@@ -73,7 +73,7 @@ async function createBarChart(dataset, name) {
   addKey("recovered", "Recovered");
 
   const options = {
-    height: 400,
+    height: document.body.clientWidth < 768 ? 150 : 400,
     pieHole: 0.4,
   };
 
