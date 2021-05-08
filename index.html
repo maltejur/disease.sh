@@ -22,13 +22,18 @@
         box-shadow: 0 0.5em 2em -0.125em rgba(10, 10, 10, 0.2),
           0 0 0 1px rgba(10, 10, 10, 0.02);
       }
-      .navbar-item:hover,
-      .navbar-item:focus {
-        background-color: rgba(0, 0, 0, 0.1) !important;
+      .navbar-item.has-text-light:hover,
+      .navbar-item.has-text-light:focus {
+        background-color: rgba(0, 0, 0, 0.2) !important;
+        color: white !important;
       }
       @media screen and (max-width: 1024px) {
         .navbar-item {
           color: #363636 !important;
+        }
+        .navbar-item.has-text-light:hover,
+        .navbar-item.has-text-light:focus {
+          color: black !important;
         }
         .navbar-menu {
           position: fixed;
@@ -287,29 +292,13 @@
                 >Multi-Source
               </h4>
               <p>
-                We source data from
+                We source data from multiple places to give you a comprehensive
+                view. A full list of sources can be found
                 <a
-                  href="https://github.com/CSSEGISandData/COVID-19"
+                  href="https://github.com/disease-sh/api/blob/master/README.md#sources"
                   target="_blank"
-                  >Johns Hopkins University</a
-                >,
-                <a
-                  href="https://github.com/nytimes/covid-19-data"
-                  target="_blank"
-                  >the New York Times</a
-                >, Worldometers, and
-                <a
-                  href="https://github.com/ActiveConclusion/COVID19_mobility"
-                  target="_blank"
-                  >Apple</a
-                >
-                reports to give you a comprehensive view of the data. Our
-                government-specific sources can be found in our
-                <a
-                  href="https://github.com/disease-sh/api/blob/master/README.md"
-                  target="_blank"
-                  >README</a
-                >
+                  >here</a
+                >.
               </p>
             </div>
           </div>
@@ -333,7 +322,10 @@
                   ></path></svg
                 >Up to Date
               </h4>
-              <p>We update our data as soon as our sources do.</p>
+              <p>
+                We update our data as soon as our sources do. The whole process
+                is automated, so you will always get the newest data.
+              </p>
             </div>
           </div>
 

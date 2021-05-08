@@ -193,13 +193,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.addEventListener("scroll", () => {
+function checkScroll(){
   if (window.scrollY > 0) {
     document.getElementsByClassName("navbar")[0].classList.add("scrolled");
   } else {
     document.getElementsByClassName("navbar")[0].classList.remove("scrolled");
   }
-});
+}
+
+document.addEventListener("scroll", checkScroll);
+checkScroll()
 
 if (!localStorage.getItem("hideNewsletter"))
   document.getElementById("newsletter").classList.remove("is-hidden");
